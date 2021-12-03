@@ -105,6 +105,31 @@ def calcula_jacobi(a,b,tol):
             break
     return x
 
+def gauss_seidel(vec1, vector_f, limit_iter=100, tolerance=1e-6):
+  
+    x = np.zeros((len(vec1), 1))
+    D = np.diag(vec1)
+    R = vec1 - np.diagflat(D)
+
+    x_copy = x.copy()
+
+    for n_iter in range(limit_iter):
+        for j in range(vec1.shape[0]):
+            x[j, 0] = np.divide((vector_f[j, 0] - np.sum(R[j, :]@x)), D[j])
+
+        if (n_iter > 0):
+            diff = vector_f - vec1@x
+            dif_abs = np.abs(np.divide(diff, vector_f, where=vector_f!=0))
+            rel_diff = np.max(dif_abs)
+
+            if rel_diff <= tolerance:
+                print(f"Num iterações: {n_iter} | Erro: {rel_diff}")
+                return x
+
+        x_copy = x.copy()
+    print(f"Maximo de iterações: {n_iter} alcançado, com erro: {rel_diff}")
+    return x
+
 def calcula_u_comp(u,R):
     u_comp = np.zeros((len(R)+len(u),1))
     k = 0

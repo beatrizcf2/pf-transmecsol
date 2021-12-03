@@ -58,7 +58,7 @@ def calcula_Ke(C, M, E, A,nn):
     for coluna in range(colunas):
         me = (M[:,coluna]).reshape(linhas,1)
         me_t = np.transpose(me)
-        Se = ((E*A)/l[coluna])*((me@me_t)/(np.linalg.norm(me))**2)
+        Se = ((E[coluna]*A[coluna])/l[coluna])*((me@me_t)/(np.linalg.norm(me))**2)
         ce = C[:,coluna].reshape(np.shape(C)[0],1)
         ce_t = np.transpose(ce)
         Ke = np.kron((ce@ce_t),Se)
@@ -157,7 +157,7 @@ def calcula_deformacao(Inc,u_comp,l,R,trig):
     return lista_d
 
 def calcula_tensao(E,d):
-    return E*d
+    return [a*b for a,b in zip(E,d)]
 
 def calcula_r_apoio(Kg, u_comp,R):
     R = list(R[:,0].astype(int))
